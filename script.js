@@ -14,7 +14,7 @@
     // The form POSTs JSON: { name, attending, guests, note, submittedAt }
     // The endpoint must allow cross-origin requests (CORS) and answer with a 2xx status.
     // While this is empty, the form validates but reports that RSVPs can't be sent yet.
-    rsvpEndpoint: '',
+    rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbzckAZzovUmCoy7Zy9jiJIo7I_o-nGvoELvffhtH2oCi0w9C73WGZUnFOXbc3a7cLQv/exec',
     rsvpTimeoutMs: 15000,
   };
 
