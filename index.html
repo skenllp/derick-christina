@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" class="is-locked">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FFF9EF">
+
+  <title>Derick &amp; Christina | Wedding Invitation</title>
+  <meta name="description" content="Together with their families, Derick Mathew and Christina Cherian invite you to celebrate their wedding on 9 January 2027.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Derick &amp; Christina | Wedding Invitation">
+  <meta property="og:description" content="Together with their families, Derick Mathew and Christina Cherian invite you to celebrate their wedding on 9 January 2027.">
+  <!-- After hosting, change this to the full https:// address of the image so link previews work. -->
+  <meta property="og:image" content="assets/invitation-bg.webp">
+  <meta property="og:locale" content="en_IN">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <!-- Images -->
+  <link rel="preload" as="image" href="assets/opening-bg.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/invitation-bg.webp">
+
+  <link rel="stylesheet" href="style.css">
+
+  <noscript>
+    <style>
+      html.is-locked, html.is-locked body { overflow: auto; }
+      .opening { display: none; }
+      .invitation { opacity: 1 !important; transform: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
+</head>
+<body>
+
+  <!-- ============ SCREEN 1 — OPENING ============ -->
+  <section class="opening" id="opening" aria-label="Wedding invitation">
+    <div class="opening-card">
+      <div class="opening-content">
+        <p class="eyebrow">Together with their families</p>
+
+        <h1 class="opening-names" aria-label="Derick Mathew and Christina Cherian">
+          <span class="gold-text">Derick Mathew</span>
+          <span class="opening-amp" aria-hidden="true">&amp;</span>
+          <span class="gold-text">Christina Cherian</span>
+        </h1>
+
+        <p class="opening-request">Request the honour of your presence at their wedding celebration.</p>
+
+        <div class="divider" aria-hidden="true"><i></i></div>
+
+        <p class="opening-date">Saturday, 9 January 2027</p>
+        <p class="opening-time">At 2:30 PM</p>
+      </div>
+
+      <div class="opening-seal-wrap">
+        <button type="button" class="seal" id="seal" aria-label="Tap to open the invitation">
+          <span class="seal-text">Tap to<br>Open</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 2 — MAIN INVITATION ============ -->
+  <main class="invitation" id="invitation" tabindex="-1" aria-label="Wedding invitation details">
+
+    <!-- Hosts, couple -->
+    <section class="panel panel--top panel--first" aria-labelledby="couple-heading">
+      <div class="panel-inner">
+        <p class="parents reveal">Mrs. Tresa Mathew &amp; Mr. Mathew Thomas</p>
+        <p class="address reveal" style="--d:.1s">Kappil Koippallil, Punnakunnam</p>
+
+        <p class="text reveal" style="--d:.2s">Request your gracious presence in the holy matrimony of our son</p>
+
+        <h2 class="names" id="couple-heading">
+          <span class="gold-text reveal reveal--name" style="--d:.3s">Derick Mathew</span>
+          <span class="amp reveal" style="--d:.45s" aria-hidden="true">&amp;</span>
+          <span class="gold-text reveal reveal--name" style="--d:.55s">Christina Cherian</span>
+        </h2>
+
+        <div class="divider reveal" style="--d:.7s" aria-hidden="true"><i></i></div>
+
+        <p class="parents parents--bride reveal" style="--d:.8s">D/o. Cherian Joseph &amp; Shiny Cherian</p>
+        <p class="address reveal" style="--d:.9s">Elanjikkal House, North Paravur</p>
+      </div>
+    </section>
+
+    <!-- Date + countdown -->
+    <section class="panel panel--flip" aria-labelledby="date-heading">
+      <div class="panel-inner">
+        <h2 class="sr-only" id="date-heading">Wedding date and countdown</h2>
+
+        <p class="label label--lg reveal">Saturday</p>
+        <p class="date reveal" style="--d:.1s"><time datetime="2027-01-09">9 January 2027</time></p>
+        <p class="time reveal" style="--d:.2s"><time datetime="14:30">2:30 PM</time></p>
+
+        <div class="divider reveal" style="--d:.3s" aria-hidden="true"><i></i></div>
+
+        <div class="countdown reveal" id="countdown" role="timer" aria-live="off" aria-label="Time remaining until the wedding" style="--d:.4s">
+          <div class="cd-unit"><span class="cd-num" data-unit="days">00</span><span class="cd-label">Days</span></div>
+          <div class="cd-unit"><span class="cd-num" data-unit="hours">00</span><span class="cd-label">Hours</span></div>
+          <div class="cd-unit"><span class="cd-num" data-unit="minutes">00</span><span class="cd-label">Minutes</span></div>
+          <div class="cd-unit"><span class="cd-num" data-unit="seconds">00</span><span class="cd-label">Seconds</span></div>
+        </div>
+        <p class="countdown-done" id="countdown-done" hidden>With hearts full of gratitude, thank you for celebrating with us.</p>
+      </div>
+    </section>
+
+    <!-- Ceremony + reception -->
+    <section class="panel panel--bottom" aria-labelledby="venues-heading">
+      <div class="panel-inner">
+        <h2 class="sr-only" id="venues-heading">Wedding venues</h2>
+
+        <article class="venue reveal">
+          <svg class="venue-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M24 3v8M20.5 6.5h7"/>
+            <path d="M13 22l11-10 11 10"/>
+            <path d="M16 20v20M32 20v20"/>
+            <path d="M10 40h28"/>
+            <path d="M20 40v-7a4 4 0 0 1 8 0v7"/>
+            <circle cx="24" cy="21" r="1.6"/>
+          </svg>
+          <h3 class="label label--lg">Wedding Ceremony</h3>
+          <p class="venue-name">St. Joseph Syro Malabar Church</p>
+          <p class="address">Punnakunnam, Kuttanad, Alappuzha</p>
+          <a class="btn btn--outline" href="https://www.google.com/maps/search/?api=1&amp;query=St+Joseph+Syro+Malabar+Church+Punnakunnam+Kuttanad+Alappuzha" target="_blank" rel="noopener noreferrer">View Location<span class="sr-only"> of the wedding ceremony (opens in a new tab)</span></a>
+        </article>
+
+        <div class="divider reveal" aria-hidden="true"><i></i></div>
+
+        <article class="venue reveal">
+          <svg class="venue-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle cx="18" cy="29" r="9"/>
+            <circle cx="30" cy="29" r="9"/>
+            <path d="M24 5l2.6 3.4L24 12l-2.6-3.6z"/>
+          </svg>
+          <h3 class="label label--lg">Wedding Reception</h3>
+          <p class="venue-name">Vijaya International Convention Centre</p>
+          <p class="address">Thiruvalla</p>
+          <a class="btn btn--outline" href="https://www.google.com/maps/search/?api=1&amp;query=Vijaya+International+Convention+Centre+Thiruvalla" target="_blank" rel="noopener noreferrer">View Location<span class="sr-only"> of the wedding reception (opens in a new tab)</span></a>
+        </article>
+      </div>
+    </section>
+
+    <!-- RSVP -->
+    <section class="panel panel--flip panel--rsvp" aria-labelledby="rsvp-heading">
+      <div class="rsvp-card reveal">
+        <h2 class="rsvp-title" id="rsvp-heading">RSVP</h2>
+        <p class="rsvp-sub">Kindly confirm your presence.</p>
+
+        <form id="rsvp-form" novalidate>
+          <!-- Honeypot: real guests never see or fill this -->
+          <div class="hp" aria-hidden="true">
+            <label for="rsvp-website">Website</label>
+            <input type="text" id="rsvp-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="rsvp-name">Your Name</label>
+            <input class="input" type="text" id="rsvp-name" name="name" placeholder="Full name" autocomplete="name" maxlength="80" required aria-describedby="rsvp-name-error">
+            <p class="field-error" id="rsvp-name-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <p class="field-label" id="rsvp-attend-label">Will you celebrate with us?</p>
+            <div class="choices" role="group" aria-labelledby="rsvp-attend-label" aria-describedby="rsvp-attend-error">
+              <button type="button" class="choice" data-value="accept" aria-pressed="false">Joyfully Accept</button>
+              <button type="button" class="choice" data-value="decline" aria-pressed="false">Regretfully Decline</button>
+            </div>
+            <p class="field-error" id="rsvp-attend-error" hidden></p>
+          </div>
+
+          <div class="field" id="rsvp-guests-field" hidden>
+            <label class="field-label" for="rsvp-guests">Number of Guests</label>
+            <select class="input input--select" id="rsvp-guests" name="guests" aria-describedby="rsvp-guests-error">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+            <p class="field-error" id="rsvp-guests-error" hidden></p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="rsvp-note">A note for the couple <span class="field-optional">(optional)</span></label>
+            <textarea class="input input--textarea" id="rsvp-note" name="note" rows="3" maxlength="500" placeholder="Your blessings &amp; wishes..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn--solid" id="rsvp-submit">Send RSVP</button>
+          <p class="form-status" id="rsvp-status" role="status" aria-live="polite" hidden></p>
+        </form>
+
+        <div class="rsvp-thanks" id="rsvp-thanks" tabindex="-1" hidden>
+          <div class="divider" aria-hidden="true"><i></i></div>
+          <p class="rsvp-thanks-title">Thank you for your response!</p>
+          <p class="rsvp-thanks-sub" id="rsvp-thanks-sub"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing -->
+    <footer class="panel panel--bottom panel--footer">
+      <div class="panel-inner">
+        <div class="divider reveal" aria-hidden="true"><i></i></div>
+        <p class="closing-lead reveal" style="--d:.1s">With Best Compliments</p>
+        <p class="closing-names reveal" style="--d:.2s">Donna &amp; Joel</p>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

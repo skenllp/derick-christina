@@ -1,0 +1,826 @@
+/* ==========================================================
+   Derick & Christina — Wedding Invitation
+   ========================================================== */
+
+:root {
+  --ivory: #FFF9EF;
+  --gold: #B59458;
+  --gold-deep: #8A6B33;      /* darker gold for small text (better contrast) */
+  --brown: #4A392D;
+  --green: #203D30;
+  --blush: #EBD6D0;
+  --error: #8B2E2E;
+
+  --font-script: 'Great Vibes', cursive;
+  --font-head: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'EB Garamond', Georgia, serif;
+  --font-label: 'Cinzel', Georgia, serif;
+
+  --ease: cubic-bezier(.4, 0, .2, 1);
+  --open-duration: 1.5s;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html.is-locked,
+html.is-locked body { overflow: hidden; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  font-family: var(--font-body);
+  color: var(--brown);
+  background: linear-gradient(160deg, #F4E8DA 0%, var(--blush) 50%, #F2E7D3 100%);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, svg { max-width: 100%; }
+p, h1, h2, h3 { margin: 0; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+[hidden] { display: none !important; }
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+
+/* ---------- Shared type ---------- */
+
+.gold-text { color: var(--gold-deep); }
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .gold-text {
+    background: linear-gradient(120deg, #8A6B33 0%, #B59458 32%, #D2B77A 50%, #B59458 68%, #8A6B33 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.label {
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: clamp(.66rem, 2.9vw, .78rem);
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+
+.label--lg {
+  font-size: clamp(.78rem, 3.4vw, .92rem);
+  letter-spacing: .3em;
+}
+
+.text {
+  font-size: clamp(1rem, 4.3vw, 1.18rem);
+  line-height: 1.6;
+  text-wrap: balance;
+}
+
+.parents {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: clamp(1.25rem, 5.7vw, 1.6rem);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.parents--bride { font-size: clamp(1.1rem, 5vw, 1.4rem); }
+
+.address {
+  font-size: clamp(.98rem, 4.2vw, 1.12rem);
+  font-style: italic;
+  line-height: 1.5;
+  margin-top: .25rem;
+  text-wrap: balance;
+}
+
+.names {
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 10vw, 3.2rem);
+  line-height: 1.1;
+  margin: clamp(.9rem, 3vh, 1.5rem) 0 0;
+}
+
+.names .gold-text { display: block; padding: .06em .12em; }
+
+.amp {
+  display: block;
+  font-family: var(--font-head);
+  font-style: italic;
+  font-size: clamp(1.4rem, 6vw, 1.9rem);
+  color: var(--gold-deep);
+  line-height: 1.2;
+  margin: .1rem 0;
+}
+
+/* ---------- Divider ---------- */
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: min(230px, 70%);
+  margin: clamp(14px, 3.2vh, 26px) auto;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+.divider::after { background: linear-gradient(270deg, transparent, var(--gold)); }
+
+.divider i {
+  flex: none;
+  width: 7px; height: 7px;
+  border: 1px solid var(--gold);
+  transform: rotate(45deg);
+}
+
+/* Divider draw-in animation (main page only) */
+.divider.reveal { opacity: 1; transform: none; }
+.divider.reveal::before,
+.divider.reveal::after {
+  transform: scaleX(0);
+  transition: transform 1.1s var(--ease) var(--d, 0s);
+}
+.divider.reveal::before { transform-origin: right center; }
+.divider.reveal::after  { transform-origin: left center; }
+.divider.reveal i {
+  opacity: 0;
+  transform: rotate(45deg) scale(.3);
+  transition: opacity .8s var(--ease) var(--d, 0s), transform .8s var(--ease) var(--d, 0s);
+}
+.divider.reveal.is-visible::before,
+.divider.reveal.is-visible::after { transform: scaleX(1); }
+.divider.reveal.is-visible i { opacity: 1; transform: rotate(45deg) scale(1); }
+
+/* ---------- Scroll reveal ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 1s var(--ease) var(--d, 0s), transform 1s var(--ease) var(--d, 0s);
+}
+.reveal--name { transform: translateY(10px) scale(.96); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* ==========================================================
+   SCREEN 1 — OPENING
+   ========================================================== */
+
+.opening {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(160deg, #F4E8DA 0%, var(--blush) 50%, #F2E7D3 100%);
+  transition:
+    opacity var(--open-duration) var(--ease),
+    visibility 0s linear var(--open-duration);
+}
+.opening[hidden] { display: none; }
+
+.opening-card {
+  position: relative;
+  width: min(100%, 480px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--ivory) url('assets/opening-bg.webp') center / cover no-repeat;
+  box-shadow: 0 0 60px rgba(74, 57, 45, .2);
+  transition: transform var(--open-duration) var(--ease);
+  will-change: transform;
+}
+
+.opening-content {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(40px, 10svh, 100px) 15% 0;
+}
+
+.eyebrow {
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: clamp(.6rem, 2.6vw, .72rem);
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  line-height: 1.8;
+  text-wrap: balance;
+}
+
+.opening-names {
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: clamp(1.9rem, min(9.6vw, 5.4svh), 3rem);
+  line-height: 1.1;
+  margin: clamp(.6rem, 2.2svh, 1.2rem) 0 0;
+}
+.opening-names .gold-text { display: block; padding: .06em .12em; }
+
+.opening-amp {
+  display: block;
+  font-family: var(--font-head);
+  font-style: italic;
+  font-size: clamp(1.2rem, min(5.4vw, 3.6svh), 1.8rem);
+  color: var(--gold-deep);
+  line-height: 1.2;
+}
+
+.opening-request {
+  margin-top: clamp(.6rem, 2svh, 1.1rem);
+  font-size: clamp(.95rem, min(4vw, 2.6svh), 1.12rem);
+  line-height: 1.55;
+  text-wrap: balance;
+}
+
+.opening .divider { margin: clamp(10px, 2.2svh, 22px) auto; }
+
+.opening-date {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: clamp(.74rem, min(3.3vw, 2.3svh), .92rem);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--brown);
+  line-height: 1.7;
+  text-wrap: balance;
+}
+
+.opening-time {
+  font-family: var(--font-head);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.05rem, min(4.6vw, 3svh), 1.3rem);
+  margin-top: .15rem;
+}
+
+.opening-seal-wrap {
+  padding: 12px 0 clamp(56px, 10.5svh, 100px);
+}
+
+/* ----- Wax seal ----- */
+
+.seal {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(84px, 24vw, 100px);
+  height: clamp(84px, 24vw, 100px);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: radial-gradient(circle at 32% 28%, #EEDDB0 0%, #D1B473 34%, #B59458 62%, #8C6E36 100%);
+  box-shadow:
+    0 8px 18px rgba(74, 57, 45, .35),
+    0 2px 4px rgba(74, 57, 45, .25),
+    inset 0 2px 3px rgba(255, 255, 255, .55),
+    inset 0 -4px 7px rgba(70, 50, 15, .35);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+
+.seal::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 246, 220, .75);
+  box-shadow: inset 0 0 0 3px rgba(140, 110, 54, .18);
+}
+
+.seal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  animation: seal-pulse 2.6s ease-out infinite;
+  pointer-events: none;
+}
+
+.seal-text {
+  position: relative;
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: clamp(.56rem, 2.3vw, .66rem);
+  letter-spacing: .14em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  color: #2E2112;
+  text-shadow: 0 1px 0 rgba(255, 244, 214, .5);
+}
+
+.seal:hover { box-shadow: 0 10px 22px rgba(74, 57, 45, .4), 0 2px 4px rgba(74, 57, 45, .25), inset 0 2px 3px rgba(255,255,255,.55), inset 0 -4px 7px rgba(70,50,15,.35); }
+.seal:active,
+.seal.is-pressed { transform: scale(.93); }
+.seal.is-pressed::after { animation: none; opacity: 0; }
+
+@keyframes seal-pulse {
+  0%   { transform: scale(1);    opacity: .6; }
+  70%  { transform: scale(1.38); opacity: 0; }
+  100% { transform: scale(1.38); opacity: 0; }
+}
+
+/* ----- Opening → main transition ----- */
+
+.is-open .opening {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.is-open .opening-card { transform: scale(1.08); }
+
+/* ==========================================================
+   SCREEN 2 — MAIN INVITATION
+   ========================================================== */
+
+.invitation {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+  container-type: inline-size;
+  background: var(--ivory);
+  box-shadow: 0 0 60px rgba(74, 57, 45, .18);
+  overflow-x: clip;
+  outline: none;
+  opacity: 0;
+  transform: scale(.97);
+  transition: opacity var(--open-duration) var(--ease), transform var(--open-duration) var(--ease);
+}
+.is-open .invitation { opacity: 1; transform: none; }
+
+/* Each panel carries its own copy of the decorative background so the
+   artwork is never stretched; panels are roughly one 9:16 screen tall. */
+.panel {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+  min-height: min(100svh, 178cqw);
+  padding: clamp(56px, 16vw, 76px) clamp(34px, 10.5vw, 52px);
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ivory) url('assets/invitation-bg.webp') center / cover no-repeat;
+}
+
+.panel--top::before    { background-position: center top; }
+.panel--bottom::before { background-position: center bottom; }
+.panel--flip::before   { transform: scaleX(-1); }
+
+/* The first panel starts lower so text clears the top-right florals */
+.panel--first {
+  justify-content: flex-start;
+  padding-top: 140px;
+  padding-top: max(120px, 36cqw);
+}
+
+/* Soft feathered ivory behind text keeps it readable over lace and florals */
+.panel-inner {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 340px;
+  margin-inline: auto;
+}
+
+.panel-inner::before {
+  content: "";
+  position: absolute;
+  inset: -32px -26px;
+  z-index: -1;
+  background: radial-gradient(ellipse 75% 72% at 50% 50%,
+    rgba(255, 249, 239, .82) 0%,
+    rgba(255, 249, 239, .7) 55%,
+    rgba(255, 249, 239, 0) 100%);
+  pointer-events: none;
+}
+
+/* ----- Date ----- */
+
+.date {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 7.4vw, 2.2rem);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-top: .5rem;
+}
+
+.time {
+  font-family: var(--font-head);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 5.6vw, 1.6rem);
+  letter-spacing: .14em;
+  color: var(--gold-deep);
+  margin-top: .3rem;
+}
+
+/* ----- Countdown ----- */
+
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(6px, 2vw, 10px);
+  margin-top: 1.4rem;
+}
+
+.cd-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3rem;
+  padding: .85rem .15rem .7rem;
+  background: rgba(255, 249, 239, .82);
+  border: 1px solid var(--gold);
+  box-shadow: inset 0 0 0 3px rgba(255, 249, 239, .9), inset 0 0 0 4px rgba(181, 148, 88, .35);
+}
+
+.cd-num {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: clamp(1.55rem, 7.2vw, 2.1rem);
+  line-height: 1;
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+}
+
+.cd-label {
+  font-family: var(--font-label);
+  font-size: clamp(.5rem, 2.1vw, .6rem);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+
+.countdown-done {
+  margin-top: 1.4rem;
+  font-family: var(--font-head);
+  font-style: italic;
+  font-size: clamp(1.2rem, 5.4vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--green);
+  text-wrap: balance;
+}
+
+/* ----- Venues ----- */
+
+.venue { display: flex; flex-direction: column; align-items: center; }
+
+.venue-icon {
+  width: 38px; height: 38px;
+  color: var(--gold);
+  margin-bottom: .6rem;
+}
+
+.venue-name {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: clamp(1.3rem, 6vw, 1.7rem);
+  line-height: 1.25;
+  margin-top: .45rem;
+  text-wrap: balance;
+}
+
+.venue .btn { margin-top: 1.1rem; }
+
+/* ----- Buttons ----- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: .8rem 1.7rem;
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: clamp(.68rem, 2.9vw, .78rem);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid var(--gold);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color .3s var(--ease),
+    color .3s var(--ease),
+    border-color .3s var(--ease),
+    box-shadow .3s var(--ease),
+    transform .2s var(--ease);
+}
+
+.btn--outline {
+  color: var(--green);
+  background: rgba(255, 249, 239, .75);
+}
+.btn--outline:hover {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(32, 61, 48, .25);
+}
+
+.btn--solid {
+  width: 100%;
+  margin-top: .6rem;
+  color: #fff;
+  background: var(--green);
+  border-color: var(--green);
+  box-shadow: 0 4px 10px rgba(32, 61, 48, .2);
+}
+.btn--solid:hover {
+  border-color: var(--gold);
+  box-shadow: 0 8px 20px rgba(32, 61, 48, .32);
+  transform: translateY(-1px);
+}
+.btn:active { transform: scale(.98); }
+.btn--solid:disabled { opacity: .7; cursor: progress; transform: none; }
+
+/* ==========================================================
+   RSVP
+   ========================================================== */
+
+.panel--rsvp {
+  padding-inline: clamp(22px, 7vw, 40px);
+  padding-block: clamp(48px, 12vw, 64px);
+}
+
+.rsvp-card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  padding: clamp(26px, 8vw, 38px) clamp(20px, 6.5vw, 32px);
+  background: rgba(255, 249, 239, .94);
+  border: 1px solid var(--gold);
+  box-shadow: 0 10px 34px rgba(74, 57, 45, .14);
+  text-align: center;
+}
+
+.rsvp-card::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(181, 148, 88, .55);
+  pointer-events: none;
+}
+
+.rsvp-title {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: clamp(2rem, 9vw, 2.6rem);
+  letter-spacing: .28em;
+  text-indent: .28em;
+  color: var(--green);
+  line-height: 1.1;
+}
+
+.rsvp-sub {
+  font-family: var(--font-head);
+  font-style: italic;
+  font-size: clamp(1.05rem, 4.6vw, 1.25rem);
+  margin: .35rem 0 1.5rem;
+}
+
+.field { margin-bottom: 1.25rem; text-align: left; animation: field-in .4s var(--ease); }
+
+.field-label {
+  display: block;
+  margin-bottom: .55rem;
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: clamp(.62rem, 2.7vw, .72rem);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--brown);
+  line-height: 1.5;
+}
+
+.field-optional {
+  font-family: var(--font-body);
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: .02em;
+  font-size: .95em;
+  color: var(--gold-deep);
+}
+
+.input {
+  display: block;
+  width: 100%;
+  padding: .8rem .9rem;
+  font-family: var(--font-body);
+  font-size: 1rem; /* 16px+ stops iOS zooming on focus */
+  color: var(--brown);
+  background: rgba(255, 255, 255, .6);
+  border: 1px solid var(--gold);
+  border-radius: 0;
+  transition: border-color .3s var(--ease), box-shadow .3s var(--ease), background-color .3s var(--ease);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.input::placeholder { color: rgba(74, 57, 45, .55); font-style: italic; }
+.input:focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(32, 61, 48, .15);
+}
+.input[aria-invalid="true"] { border-color: var(--error); }
+
+.input--select {
+  padding-right: 2.4rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238A6B33' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .9rem center;
+  cursor: pointer;
+}
+
+.input--textarea { resize: vertical; min-height: 92px; line-height: 1.5; }
+
+/* Attendance choice */
+.choices { display: grid; gap: .6rem; }
+
+.choice {
+  min-height: 48px;
+  padding: .7rem 1rem;
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: clamp(.66rem, 2.9vw, .76rem);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--brown);
+  background: rgba(255, 255, 255, .55);
+  border: 1px solid var(--gold);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease), transform .2s var(--ease);
+}
+.choice:hover { border-color: var(--green); box-shadow: 0 3px 10px rgba(74, 57, 45, .12); }
+.choice:active { transform: scale(.98); }
+.choice[aria-pressed="true"] {
+  color: #fff;
+  background: var(--green);
+  border-color: var(--green);
+  box-shadow: 0 4px 12px rgba(32, 61, 48, .28);
+}
+.choice[data-value="decline"][aria-pressed="true"] {
+  background: var(--brown);
+  border-color: var(--brown);
+}
+
+.field-error {
+  margin-top: .45rem;
+  font-size: .95rem;
+  line-height: 1.4;
+  color: var(--error);
+}
+
+.form-status {
+  margin-top: 1rem;
+  padding: .75rem .9rem;
+  font-size: 1rem;
+  line-height: 1.45;
+  text-align: left;
+  border-left: 3px solid var(--error);
+  background: rgba(139, 46, 46, .07);
+  color: var(--error);
+}
+
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px; height: 1px;
+  overflow: hidden;
+}
+
+/* Thank-you state */
+.rsvp-thanks { outline: none; animation: field-in .6s var(--ease); }
+.rsvp-thanks-title {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 7vw, 2.1rem);
+  line-height: 1.25;
+  color: var(--green);
+  text-wrap: balance;
+}
+.rsvp-thanks-sub {
+  margin-top: .6rem;
+  font-style: italic;
+  font-size: clamp(1rem, 4.3vw, 1.15rem);
+  line-height: 1.55;
+}
+
+@keyframes field-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ==========================================================
+   FOOTER
+   ========================================================== */
+
+.panel--footer {
+  min-height: 60vh;
+  min-height: min(56svh, 100cqw);
+  justify-content: flex-start;
+  padding-top: clamp(56px, 15vw, 72px);
+  padding-bottom: clamp(56px, 15vw, 80px);
+}
+
+.closing-lead {
+  font-family: var(--font-head);
+  font-style: italic;
+  font-size: clamp(1.15rem, 5vw, 1.4rem);
+}
+
+.closing-names {
+  margin-top: .3rem;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 7.4vw, 2.1rem);
+  letter-spacing: .04em;
+  color: var(--green);
+}
+
+/* ==========================================================
+   LARGER SCREENS
+   ========================================================== */
+
+@media (min-width: 600px) {
+  .invitation { margin-block: 0; }
+}
+
+/* Short phones */
+@media (max-height: 640px) {
+  .opening-seal-wrap { padding-bottom: 44px; }
+  .seal { width: 76px; height: 76px; }
+}
+
+/* ==========================================================
+   REDUCED MOTION
+   ========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0s !important;
+  }
+
+  .reveal,
+  .divider.reveal::before,
+  .divider.reveal::after,
+  .divider.reveal i { opacity: 1; transform: none; }
+  .divider.reveal i { transform: rotate(45deg); }
+
+  .seal::after { display: none; }
+  .is-open .opening-card { transform: none; }
+}
