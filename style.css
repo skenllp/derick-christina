@@ -788,6 +788,44 @@ p, h1, h2, h3 { margin: 0; }
 }
 
 /* ==========================================================
+   MUSIC TOGGLE
+   ========================================================== */
+
+.music-toggle {
+  position: fixed;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  right: 16px;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  color: var(--green);
+  background: rgba(255, 249, 239, .92);
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 4px 14px rgba(74, 57, 45, .22);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .8s var(--ease) .8s, visibility 0s linear .8s, background-color .3s var(--ease), color .3s var(--ease), transform .2s var(--ease);
+}
+.is-open .music-toggle { opacity: 1; visibility: visible; }
+.music-toggle:hover { background: var(--green); color: #fff; }
+.music-toggle:active { transform: scale(.93); }
+.music-toggle svg { width: 22px; height: 22px; }
+.music-toggle .icon-on { display: none; }
+.music-toggle.is-playing .icon-on { display: block; }
+.music-toggle.is-playing .icon-off { display: none; }
+
+/* Keep the button inside the invitation column on wide screens */
+@media (min-width: 520px) {
+  .music-toggle { right: calc(50% - 240px + 16px); }
+}
+
+/* ==========================================================
    LARGER SCREENS
    ========================================================== */
 

@@ -226,6 +226,19 @@
     </footer>
   </main>
 
+  <!-- Background music: starts when the seal is tapped (browsers require a tap), loops, can be muted -->
+  <audio id="bgm" src="assets/music.mp3" loop preload="none"></audio>
+  <button type="button" class="music-toggle" id="music-toggle" aria-label="Play music" aria-pressed="false">
+    <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/>
+      <path d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.6 7.6 0 0 1 0 11"/>
+    </svg>
+    <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/>
+      <path d="M16 9.5l5 5M21 9.5l-5 5"/>
+    </svg>
+  </button>
+
   <script src="script.js" defer></script>
 </body>
 </html>

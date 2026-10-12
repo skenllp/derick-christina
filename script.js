@@ -23,7 +23,7 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ---------- Opening → main invitation ---------- */
-  function initOpening() {
+  function initOpening(music) {
     const root = document.documentElement;
     const opening = $('#opening');
     const seal = $('#seal');
@@ -41,6 +41,9 @@
       const instant = reducedMotion.matches;
       seal.classList.add('is-pressed');
 
+      // Must run directly inside the tap handler or mobile browsers block audio.
+      music.start();
+
       window.setTimeout(() => {
         root.classList.add('is-open');
         root.classList.remove('is-locked');
@@ -53,6 +56,66 @@
         window.setTimeout(() => { opening.hidden = true; }, instant ? 0 : 1500);
       }, instant ? 0 : 220);
     });
+  }
+
+  /* ---------- Background music ---------- */
+  function initMusic() {
+    const audio = $('#bgm');
+    const button = $('#music-toggle');
+    if (!audio || !button) return { start() {} };
+
+    const TARGET_VOLUME = 0.5;
+    let fadeTimer = null;
+    let pausedByTab = false;
+
+    function render() {
+      const playing = !audio.paused;
+      button.classList.toggle('is-playing', playing);
+      button.setAttribute('aria-pressed', String(playing));
+      button.setAttribute('aria-label', playing ? 'Mute music' : 'Play music');
+    }
+
+    function fadeIn() {
+      window.clearInterval(fadeTimer);
+      audio.volume = 0;
+      fadeTimer = window.setInterval(() => {
+        audio.volume = Math.min(TARGET_VOLUME, audio.volume + 0.05);
+        if (audio.volume >= TARGET_VOLUME) window.clearInterval(fadeTimer);
+      }, 150);
+    }
+
+    function play() {
+      const attempt = audio.play();
+      if (attempt && typeof attempt.then === 'function') {
+        attempt.then(fadeIn).catch(render); // blocked or failed: leave the button in "off" state
+      }
+    }
+
+    audio.addEventListener('play', render);
+    audio.addEventListener('pause', render);
+
+    button.addEventListener('click', () => {
+      pausedByTab = false;
+      if (audio.paused) {
+        play();
+      } else {
+        audio.pause();
+      }
+    });
+
+    // Be polite: pause when the guest switches tabs, resume when they return.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && !audio.paused) {
+        pausedByTab = true;
+        audio.pause();
+      } else if (!document.hidden && pausedByTab) {
+        pausedByTab = false;
+        audio.play().catch(render);
+      }
+    });
+
+    render();
+    return { start: play };
   }
 
   /* ---------- Scroll reveals ---------- */
@@ -262,7 +325,7 @@
   }
 
   /* ---------- Init ---------- */
-  initOpening();
+  initOpening(initMusic());
   initCountdown();
   initRsvp();
 })();
