@@ -505,15 +505,15 @@ p, h1, h2, h3 { margin: 0; }
 }
 
 /* Entrance, once the invitation opens */
-.is-open .hero-glow     { animation: hero-fade 2.4s var(--ease) .5s forwards; }
-.is-open .hero-layer    { animation: hero-drift 2.4s var(--ease) .2s forwards; }
-.is-open .hero-aisle    { animation: hero-rise 2.2s var(--ease) .5s forwards; }
-.is-open .hero-chandelier { animation: chandelier-drop 2.6s cubic-bezier(.22, .8, .24, 1) .3s forwards; }
+.is-open .hero-glow     { animation: hero-fade 2.4s var(--ease) .9s forwards; }
+.is-open .hero-layer    { animation: hero-drift 2.4s var(--ease) .6s forwards; }
+.is-open .hero-aisle    { animation: hero-rise 2.2s var(--ease) .8s forwards; }
+.is-open .hero-chandelier { animation: chandelier-drop 2.8s cubic-bezier(.22, .8, .24, 1) .9s forwards; }
 
 /* Barely-there sway after settling: slow, small, not a distraction */
-.is-open .hero-foliage { animation: sway 11s ease-in-out 2.8s infinite alternate; }
-.is-open .hero-layer--r .hero-foliage { animation-duration: 13s; animation-direction: alternate-reverse; }
-.is-open .hero-chandelier img { animation: sway-chandelier 9s ease-in-out 3s infinite alternate; }
+.is-open .hero-foliage { animation: sway 8s ease-in-out 2.8s infinite alternate; }
+.is-open .hero-layer--r .hero-foliage { animation-duration: 9.5s; animation-direction: alternate-reverse; }
+.is-open .hero-chandelier img { animation: sway-chandelier 5.5s ease-in-out 3.7s infinite alternate; }
 
 @keyframes hero-fade { to { opacity: 1; } }
 @keyframes hero-drift {
@@ -525,12 +525,15 @@ p, h1, h2, h3 { margin: 0; }
   to   { opacity: 1; transform: none; }
 }
 @keyframes chandelier-drop {
-  from { opacity: 0; transform: translateY(-34%); }
+  from { opacity: 0; transform: translateY(-55%); }
   60%  { opacity: 1; }
   to   { opacity: 1; transform: none; }
 }
-@keyframes sway            { from { transform: rotate(-.7deg); } to { transform: rotate(.7deg); } }
-@keyframes sway-chandelier { from { transform: rotate(-.6deg); } to { transform: rotate(.6deg); } }
+@keyframes sway            { from { transform: rotate(-1.4deg); } to { transform: rotate(1.4deg); } }
+@keyframes sway-chandelier {
+  from { transform: rotate(-2.4deg) translateY(0); }
+  to   { transform: rotate(2.4deg) translateY(1.2cqw); }
+}
 
 .hero-content {
   position: relative;
