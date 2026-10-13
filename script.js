@@ -1,6 +1,6 @@
 /* ==========================================================
    Derick & Christina — Wedding Invitation
-   Opening interaction · countdown · scroll reveals · RSVP
+   Opening video · countdown · scroll reveals · RSVP
    ========================================================== */
 (() => {
   'use strict';
@@ -22,39 +22,120 @@
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* ---------- Opening → main invitation ---------- */
+  /* ---------- Opening video → main invitation ---------- */
   function initOpening(music) {
     const root = document.documentElement;
     const opening = $('#opening');
-    const seal = $('#seal');
+    const stage = $('#opening-stage');
+    const video = $('#opening-video');
+    const openBtn = $('#open-btn');
+    const skipBtn = $('#skip-btn');
     const main = $('#invitation');
-    if (!opening || !seal || !main) return;
+    if (!opening || !openBtn || !main) return;
+
+    const HOLD_MS = 900;          // linger on the final invitation frame
+    const STALL_MS = 12000;       // give up if the video makes no progress
+    const instant = reducedMotion.matches;
 
     // Keep the invitation out of reach (tab order, screen readers) until opened.
     main.inert = true;
-    let opened = false;
 
-    seal.addEventListener('click', () => {
-      if (opened) return;
-      opened = true;
+    let started = false;
+    let finished = false;
+    let holdTimer = null;
+    let watchdog = null;
+    let lastTime = -1;
+    let lastProgressAt = 0;
+    let videoFailed = false;
 
-      const instant = reducedMotion.matches;
-      seal.classList.add('is-pressed');
+    if (video) {
+      video.muted = true;            // iOS needs the property, not just the attribute
+      video.defaultMuted = true;
+      video.loop = false;
+      video.controls = false;
+      video.addEventListener('error', () => { videoFailed = true; if (started) finish(true); }, true);
+      const source = video.querySelector('source');
+      if (source) source.addEventListener('error', () => { videoFailed = true; if (started) finish(true); });
+    }
+
+    /* Reveal the main invitation and enable scrolling */
+    function finish(immediate) {
+      if (finished) return;
+      finished = true;
+      window.clearTimeout(holdTimer);
+      window.clearInterval(watchdog);
+      if (video) video.pause();
+
+      const quick = immediate || instant;
+      root.classList.add('is-open');
+      root.classList.remove('is-locked');
+      main.inert = false;
+
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      main.focus({ preventScroll: true });
+
+      window.setTimeout(initReveal, quick ? 0 : 500);
+      window.setTimeout(() => { opening.hidden = true; }, quick ? 0 : 2000);
+    }
+
+    /* Video reached its last frame: hold it briefly, then transition */
+    function onEnded() {
+      if (finished) return;
+      window.clearTimeout(holdTimer);
+      holdTimer = window.setTimeout(() => finish(false), HOLD_MS);
+    }
+
+    function startOpening() {
+      if (started) return;
+      started = true;
 
       // Must run directly inside the tap handler or mobile browsers block audio.
       music.start();
 
-      window.setTimeout(() => {
-        root.classList.add('is-open');
-        root.classList.remove('is-locked');
-        main.inert = false;
+      openBtn.disabled = true;
+      stage.classList.add('is-playing');
+      root.classList.add('is-playing');
 
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-        main.focus({ preventScroll: true });
+      // Reduced motion, missing video or failed load: go straight in.
+      if (!video || instant || videoFailed) { finish(true); return; }
 
-        window.setTimeout(initReveal, instant ? 0 : 500);
-        window.setTimeout(() => { opening.hidden = true; }, instant ? 0 : 1500);
-      }, instant ? 0 : 220);
+      video.addEventListener('ended', onEnded, { once: true });
+      // Fallback for browsers that skip "ended" on the last frame
+      video.addEventListener('timeupdate', () => {
+        if (video.duration && video.currentTime >= video.duration - 0.05) onEnded();
+      });
+
+      const attempt = video.play();
+      if (attempt && typeof attempt.catch === 'function') {
+        attempt.catch(() => finish(true)); // blocked or unsupported: don't trap the guest
+      }
+
+      // Safety net: if playback stalls, let the guest in rather than leave them waiting.
+      lastProgressAt = Date.now();
+      watchdog = window.setInterval(() => {
+        if (video.currentTime !== lastTime) {
+          lastTime = video.currentTime;
+          lastProgressAt = Date.now();
+        } else if (!video.ended && Date.now() - lastProgressAt > STALL_MS) {
+          finish(true);
+        }
+      }, 1000);
+    }
+
+    openBtn.addEventListener('click', startOpening);
+
+    if (skipBtn) {
+      skipBtn.addEventListener('click', () => {
+        if (!started) {
+          started = true;
+          music.start();   // a tap is a valid gesture; the toggle lets guests mute
+        }
+        finish(true);
+      });
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !finished) skipBtn && skipBtn.click();
     });
   }
 
@@ -179,6 +260,28 @@
   }
 
   /* ---------- RSVP ---------- */
+
+  // Decide from the endpoint's reply whether the RSVP was really stored.
+  // - Non-2xx is handled by the caller.
+  // - An HTML body is a Google error / sign-in page, never a saved RSVP.
+  // - JSON or text carrying an explicit failure marker is a failure.
+  // - Anything else that arrived with a 2xx is accepted ({result:"success"}, {ok:true}, "OK", ...).
+  function isSaveConfirmed(raw) {
+    const text = String(raw || '').trim();
+    if (/^<(!doctype|html|head|body)/i.test(text)) return false;
+
+    let data = null;
+    try { data = JSON.parse(text); } catch (e) { /* plain text reply */ }
+
+    if (data && typeof data === 'object') {
+      const verdict = String(data.result || data.status || '').toLowerCase();
+      if (data.success === false || data.ok === false || data.error) return false;
+      if (/^(error|fail|failed|failure)$/.test(verdict)) return false;
+      return true;
+    }
+    return !/\b(error|exception|failed|failure)\b/i.test(text);
+  }
+
   function initRsvp() {
     const form = $('#rsvp-form');
     if (!form) return;
@@ -312,6 +415,8 @@
           signal: controller.signal,
         });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        // Apps Script answers 200 even when it fails, so read the body before celebrating.
+        if (!isSaveConfirmed(await response.text())) throw new Error('Not confirmed');
         showThanks();
       } catch (error) {
         setStatus('We could not send your RSVP. Please check your connection and try again.');
