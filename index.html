@@ -30,7 +30,7 @@
 
   <!-- Images -->
   <link rel="preload" as="image" href="assets/opening-poster.webp" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/hero-bg.webp">
+  <link rel="preload" as="image" href="assets/hero-chandelier.webp">
 
   <link rel="stylesheet" href="style.css">
 
@@ -38,7 +38,7 @@
     <style>
       html.is-locked, html.is-locked body { overflow: auto; }
       .opening { display: none; }
-      .scene-bg { opacity: 1 !important; transform: none !important; }
+      .hero-layer, .hero-chandelier, .hero-aisle, .hero-glow { opacity: 1 !important; animation: none !important; transform: none !important; }
       .invitation { opacity: 1 !important; transform: none !important; }
       .reveal { opacity: 1 !important; transform: none !important; }
     </style>
@@ -74,9 +74,15 @@
   <main class="invitation" id="invitation" tabindex="-1" aria-label="Wedding invitation details">
 
     <!-- Hosts + couple (chandelier / wedding aisle) -->
-    <section class="scene scene--hero" aria-labelledby="couple-heading">
-      <div class="scene-bg" aria-hidden="true"><i class="slice slice--top"></i><i class="slice slice--mid"></i><i class="slice slice--bot"></i></div>
-      <div class="scene-content">
+    <section class="hero" aria-labelledby="couple-heading">
+      <div class="hero-bg" aria-hidden="true">
+        <span class="hero-glow"></span>
+        <span class="hero-layer hero-layer--l"><img class="hero-foliage" src="assets/hero-foliage-left.webp" alt="" width="780" height="1386" decoding="async"></span>
+        <span class="hero-layer hero-layer--r"><img class="hero-foliage" src="assets/hero-foliage-right.webp" alt="" width="780" height="1386" decoding="async"></span>
+        <img class="hero-aisle" src="assets/hero-aisle.webp" alt="" width="1200" height="675" decoding="async">
+        <span class="hero-chandelier"><img src="assets/hero-chandelier.webp" alt="" width="680" height="1020" decoding="async"></span>
+      </div>
+      <div class="hero-content">
         <p class="parents reveal">Mrs. Tresa Mathew &amp; Mr. Mathew Thomas</p>
         <p class="address reveal" style="--d:.12s">Kappil Koippallil, Punnakunnam</p>
 

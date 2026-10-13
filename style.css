@@ -438,29 +438,107 @@ p, h1, h2, h3 { margin: 0; }
   width: 100%;
 }
 
-/* Background gently fades in once the invitation opens */
-.scene--hero .scene-bg {
+/* ----- Hero: layered cut-outs on warm cream -----
+   Chandelier, garlands and aisle are separate transparent images so each
+   can move on its own; everything animates with transform/opacity only. */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 177.7cqw;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 75% 38% at 50% 20%, #FBF2DE 0%, rgba(251, 242, 222, 0) 70%),
+    linear-gradient(180deg, #F1E4CD 0%, #F3E7D2 60%, #F1E3CB 100%);
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-glow {
+  position: absolute;
+  left: 50%; top: 4cqw;
+  width: 90cqw; height: 70cqw;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(255, 224, 150, .5), rgba(255, 224, 150, 0));
   opacity: 0;
-  transform: scale(1.015);
-  transition: opacity 2s var(--ease), transform 2.6s var(--ease);
-}
-.is-open .scene--hero .scene-bg { opacity: 1; transform: none; }
-
-/* ----- Hero: chandelier + wedding aisle ----- */
-
-.scene--hero {
-  --img: url('assets/hero-bg.webp');
-  --a: .24;
-  --b: .34;
-  --scene-fill: var(--champagne);
 }
 
-.scene--hero .scene-content {
-  padding: 35cqw 15cqw calc(var(--I) * var(--b) + 3cqw);
+.hero-layer {
+  position: absolute;
+  top: -2cqw;
+  width: 47cqw;
+  opacity: 0;
+}
+.hero-layer--l { left: -3cqw; --from: translate(-7%, -5%); transform-origin: 0 0; }
+.hero-layer--r { right: -3cqw; --from: translate(7%, -5%); transform-origin: 100% 0; }
+
+.hero-foliage { display: block; width: 100%; height: auto; transform-origin: inherit; }
+.hero-layer--l .hero-foliage { transform-origin: 0 0; }
+.hero-layer--r .hero-foliage { transform-origin: 100% 0; }
+
+.hero-chandelier {
+  position: absolute;
+  left: 50%; top: -4cqw;
+  width: 38cqw;
+  margin-left: -19cqw;
+  opacity: 0;
+}
+.hero-chandelier img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 50% 0;   /* sways from the ceiling chain */
+}
+
+.hero-aisle {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%;
+  height: auto;
+  opacity: 0;
+}
+
+/* Entrance, once the invitation opens */
+.is-open .hero-glow     { animation: hero-fade 2.4s var(--ease) .5s forwards; }
+.is-open .hero-layer    { animation: hero-drift 2.4s var(--ease) .2s forwards; }
+.is-open .hero-aisle    { animation: hero-rise 2.2s var(--ease) .5s forwards; }
+.is-open .hero-chandelier { animation: chandelier-drop 2.6s cubic-bezier(.22, .8, .24, 1) .3s forwards; }
+
+/* Barely-there sway after settling: slow, small, not a distraction */
+.is-open .hero-foliage { animation: sway 11s ease-in-out 2.8s infinite alternate; }
+.is-open .hero-layer--r .hero-foliage { animation-duration: 13s; animation-direction: alternate-reverse; }
+.is-open .hero-chandelier img { animation: sway-chandelier 9s ease-in-out 3s infinite alternate; }
+
+@keyframes hero-fade { to { opacity: 1; } }
+@keyframes hero-drift {
+  from { opacity: 0; transform: var(--from); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(3cqw); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes chandelier-drop {
+  from { opacity: 0; transform: translateY(-34%); }
+  60%  { opacity: 1; }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes sway            { from { transform: rotate(-.7deg); } to { transform: rotate(.7deg); } }
+@keyframes sway-chandelier { from { transform: rotate(-.6deg); } to { transform: rotate(.6deg); } }
+
+.hero-content {
+  position: relative;
+  padding: 51cqw 12cqw 57cqw;
 }
 
 /* Fade the aisle into the paper-coloured date section */
-.scene--hero::after {
+.hero::after {
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: 0;
@@ -916,5 +994,6 @@ p, h1, h2, h3 { margin: 0; }
 
   .open-btn::after { display: none; }
   .is-open .opening-stage { transform: none; }
-  .scene--hero .scene-bg { opacity: 1; transform: none; }
+  .hero-glow, .hero-layer, .hero-aisle, .hero-chandelier { opacity: 1; animation: none !important; transform: none; }
+  .hero-foliage, .hero-chandelier img { animation: none !important; }
 }
