@@ -949,6 +949,79 @@ p, h1, h2, h3 { margin: 0; }
   .hero-chandelier img { animation: none !important; }
 }
 
+/* ==========================================================
+   HERO — corner ornaments
+   ========================================================== */
+
+.hero-content::before,
+.hero-content::after {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+}
+
+/* Top-left and top-right corners */
+.hero-content::before {
+  top: 18cqw;
+  left: 7cqw;
+  border-top: 1px solid var(--gold-line);
+  border-left: 1px solid var(--gold-line);
+}
+.hero-content::after {
+  top: 18cqw;
+  right: 7cqw;
+  border-top: 1px solid var(--gold-line);
+  border-right: 1px solid var(--gold-line);
+}
+
+/* Bottom corners via a wrapper pseudo on .hero */
+.hero::before {
+  content: "";
+  position: absolute;
+  bottom: 16cqw;
+  left: 7cqw;
+  width: 28px;
+  height: 28px;
+  border-bottom: 1px solid var(--gold-line);
+  border-left: 1px solid var(--gold-line);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Bottom-right corner — injected via a data attribute trick using the glow element */
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  bottom: 16cqw;
+  right: 7cqw;
+  width: 28px;
+  height: 28px;
+  border-bottom: 1px solid var(--gold-line);
+  border-right: 1px solid var(--gold-line);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ==========================================================
+   SECTION BORDERS — gold hairlines between sections
+   ========================================================== */
+
+.date-section {
+  border-top: 1px solid var(--gold-line);
+  border-bottom: 1px solid var(--gold-line);
+}
+
+.scene--venues {
+  border-top: 1px solid var(--gold-line);
+  border-bottom: 1px solid var(--gold-line);
+}
+
+.scene--rsvp {
+  border-top: 1px solid var(--gold-line);
+}
+
 /* Soft hand-over from the date section's paper into the venue artwork */
 .scene--venues::before {
   content: "";
