@@ -497,8 +497,41 @@ p, h1, h2, h3 { margin: 0; }
 
 .hero-content {
   position: relative;
-  padding: 51cqw 12cqw 57cqw;
+  z-index: 3;                 /* text always above the curtain */
+  padding: 69cqw 19cqw 24cqw; /* keeps copy inside the curtain opening */
 }
+
+/* Champagne curtain frame — decorative overlay only.
+   The PNG is 941 × 1672 (9:16), exactly the hero's minimum box, so it is
+   never stretched; if the hero ever grows taller it scales to cover. */
+.hero-curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+}
+.hero-curtain img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+  filter: drop-shadow(0 .6cqw 1.6cqw rgba(110, 80, 40, .16));
+}
+.is-open .hero-curtain { animation: hero-fade 2s var(--ease) .5s forwards; }
+
+/* Hero copy sized to sit comfortably inside the curtain opening */
+.hero .parents { font-size: clamp(.9rem, 4.5cqw, 1.3rem); }
+.hero .parents--bride { font-size: clamp(.88rem, 4.2cqw, 1.2rem); }
+.hero .address { font-size: clamp(.85rem, 3.8cqw, 1.02rem); }
+.hero .text { font-size: clamp(.88rem, 3.9cqw, 1.06rem); line-height: 1.45; }
+.hero .names {
+  font-size: clamp(1.9rem, 9.6cqw, 3rem);
+  margin-inline: -5cqw;      /* the opening is widest here, so allow a little extra room */
+}
+.hero .names .gold-text { white-space: nowrap; }
 
 /* Fade the aisle into the paper-coloured date section */
 .hero::after {
@@ -508,6 +541,7 @@ p, h1, h2, h3 { margin: 0; }
   height: 14cqw;
   background: linear-gradient(to bottom, rgba(246, 235, 218, 0), var(--paper));
   pointer-events: none;
+  z-index: 2;
 }
 
 /* ----- Date + countdown ----- */
@@ -945,7 +979,7 @@ p, h1, h2, h3 { margin: 0; }
   .divider.reveal i { transform: rotate(45deg); }
 
   .seal::after { display: none; }
-  .hero-glow, .hero-aisle, .hero-chandelier { opacity: 1; animation: none !important; transform: none; }
+  .hero-glow, .hero-aisle, .hero-chandelier, .hero-curtain { opacity: 1; animation: none !important; transform: none; }
   .hero-chandelier img { animation: none !important; }
 }
 
@@ -955,6 +989,7 @@ p, h1, h2, h3 { margin: 0; }
 
 .hero-content::before,
 .hero-content::after {
+  display: none;   /* corner ornaments retired: the curtain now frames the hero */
   content: "";
   position: absolute;
   width: 28px;
@@ -978,6 +1013,7 @@ p, h1, h2, h3 { margin: 0; }
 
 /* Bottom corners via a wrapper pseudo on .hero */
 .hero::before {
+  display: none;
   content: "";
   position: absolute;
   bottom: 16cqw;
@@ -992,6 +1028,7 @@ p, h1, h2, h3 { margin: 0; }
 
 /* Bottom-right corner — injected via a data attribute trick using the glow element */
 .hero-bg::after {
+  display: none;
   content: "";
   position: absolute;
   bottom: 16cqw;
@@ -1009,8 +1046,31 @@ p, h1, h2, h3 { margin: 0; }
    ========================================================== */
 
 .date-section {
-  border-top: 1px solid var(--gold-line);
+  border-top: 0;
   border-bottom: 1px solid var(--gold-line);
+}
+
+/* Hero -> date hand-over: a champagne double rule that fades out at the
+   sides, with a centre diamond, echoing the curtain and the date divider. */
+.date-section::before {
+  content: "";
+  position: absolute;
+  left: 8cqw; right: 8cqw; top: 0;
+  height: 7px;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, var(--gold-line) 22%, #E7D4A8 50%, var(--gold-line) 78%, transparent) 0 0 / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(201, 174, 120, .6) 28%, rgba(231, 212, 168, .8) 50%, rgba(201, 174, 120, .6) 72%, transparent) 0 6px / 100% 1px no-repeat;
+}
+.date-section::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 3px;
+  width: 9px; height: 9px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--paper);
+  border: 1px solid var(--gold);
+  pointer-events: none;
 }
 
 .scene--venues {

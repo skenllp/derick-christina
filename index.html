@@ -32,6 +32,7 @@
   <link rel="preload" as="image" href="assets/envelope/envelope-base.jpg" fetchpriority="high">
   <link rel="preload" as="image" href="assets/wax-stamp.webp">
   <link rel="preload" as="image" href="assets/hero-chandelier.webp">
+  <link rel="preload" as="image" href="assets/hero-curtain.webp">
 
   <link rel="stylesheet" href="style.css">
 
@@ -39,7 +40,7 @@
     <style>
       html.is-locked, html.is-locked body { overflow: auto; }
       .opening { display: none; }
-      .hero-chandelier, .hero-aisle, .hero-glow { opacity: 1 !important; animation: none !important; transform: none !important; }
+      .hero-chandelier, .hero-aisle, .hero-glow, .hero-curtain { opacity: 1 !important; animation: none !important; transform: none !important; }
       .invitation { opacity: 1 !important; transform: none !important; }
       .reveal { opacity: 1 !important; transform: none !important; }
     </style>
@@ -72,9 +73,13 @@
     <section class="hero" aria-labelledby="couple-heading">
       <div class="hero-bg" aria-hidden="true">
         <span class="hero-glow"></span>
-        <img class="hero-aisle" src="assets/hero-aisle.webp" alt="" width="1200" height="675" decoding="async">
+        <!-- aisle image removed: assets/hero-aisle.webp is not in the project (it rendered as a broken-image outline) -->
         <span class="hero-chandelier"><img src="assets/hero-chandelier.webp" alt="" width="680" height="1020" decoding="async"></span>
       </div>
+      <picture class="hero-curtain" aria-hidden="true">
+        <source srcset="assets/hero-curtain.webp" type="image/webp">
+        <img src="assets/hero-curtain.png" alt="" width="941" height="1672" decoding="async">
+      </picture>
       <div class="hero-content">
         <p class="parents reveal">Mrs. Tresa Mathew &amp; Mr. Mathew Thomas</p>
         <p class="address reveal" style="--d:.12s">Kappil Koippallil, Punnakunnam</p>
