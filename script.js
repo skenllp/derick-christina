@@ -226,7 +226,6 @@
       btn.addEventListener('click', () => {
         attending = btn.dataset.value;
         choices.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-        guestsField.hidden = attending !== 'accept';
         setError('attend', '');
         setStatus('');
       });
