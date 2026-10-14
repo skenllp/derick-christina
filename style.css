@@ -1,7 +1,7 @@
 /* ==========================================================
    Derick & Christina — Wedding Invitation
-   Cinematic opening · chandelier hero · countdown ·
-   watercolour venues · forest-green RSVP
+   Wax-stamp opening · chandelier hero · countdown ·
+   watercolour venues · ivory-and-gold RSVP
    ========================================================== */
 
 :root {
@@ -10,13 +10,14 @@
   --champagne: #EDDFCB;       /* hero artwork centre */
   --gold: #B59458;
   --gold-deep: #8A6B33;       /* darker gold for text on ivory (contrast) */
-  --gold-light: #DCC389;      /* gold on forest green */
+  --gold-line: #C9AE78;       /* champagne-gold hairlines and field borders */
   --brown: #4A392D;
   --green: #203D30;
-  --forest: #29331B;          /* RSVP artwork green */
-  --cream-field: #FBF4E4;
+  --olive: #4A5527;           /* deep olive-green: RSVP choices and submit */
+  --olive-dark: #3A4320;
+  --ivory-paper: #F8ECDB;     /* matches the venue + RSVP paper artwork */
+  --field: #FFFCF4;
   --error: #8B2E2E;
-  --error-light: #F4B8AB;
 
   --font-script: 'Great Vibes', cursive;
   --font-head: 'Cormorant Garamond', Georgia, serif;
@@ -24,7 +25,7 @@
   --font-label: 'Cinzel', Georgia, serif;
 
   --ease: cubic-bezier(.4, 0, .2, 1);
-  --open-duration: 1.5s;
+  --open-duration: 1s;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -50,7 +51,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-img, svg, video { max-width: 100%; }
+img, svg { max-width: 100%; }
 p, h1, h2, h3 { margin: 0; }
 
 .sr-only {
@@ -198,7 +199,7 @@ p, h1, h2, h3 { margin: 0; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ==========================================================
-   SCREEN 1 — CINEMATIC OPENING VIDEO
+   SCREEN 1 — STATIC OPENING (closed envelope + wax stamp)
    ========================================================== */
 
 .opening {
@@ -231,15 +232,14 @@ p, h1, h2, h3 { margin: 0; }
   background: linear-gradient(rgba(246, 235, 218, .38), rgba(246, 235, 218, .3));
 }
 
-/* The stage keeps the video's native 9:16 composition, never cropped */
+/* The stage keeps the poster's native 9:16 composition, never cropped */
 .opening-stage {
   position: relative;
   z-index: 1;
   width: min(100vw, 56.25vh);
   width: min(100vw, calc(100svh * 9 / 16));
   aspect-ratio: 9 / 16;
-  transition: transform calc(var(--open-duration) + .3s) var(--ease);
-  will-change: transform;
+  container-type: inline-size;
 }
 
 .opening-media {
@@ -259,107 +259,88 @@ p, h1, h2, h3 { margin: 0; }
   .opening-media { box-shadow: 0 0 60px rgba(74, 57, 45, .22); }
 }
 
-.opening-video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: transparent;
-  pointer-events: none;
-}
-
-/* "Open Invitation" control */
-.opening-cta {
+/* One button = wax stamp + label. The stamp sits exactly over the poster's seal
+   (centre 50% / 50.2% of the poster; 192px cut-out on a 720px-wide poster). */
+.open-seal {
   position: absolute;
-  left: 0; right: 0;
-  bottom: max(9%, env(safe-area-inset-bottom));
+  left: 50%;
+  top: calc(50.2% - 13.34cqw);
+  transform: translateX(-50%);
   display: flex;
-  justify-content: center;
-  transition: opacity .7s var(--ease), transform .7s var(--ease), visibility 0s linear .7s;
-}
-.is-playing .opening-cta {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(8px);
-  pointer-events: none;
-}
-
-.open-btn {
-  position: relative;
-  min-height: 54px;
-  padding: .95rem 2.1rem;
-  font-family: var(--font-label);
-  font-weight: 600;
-  font-size: clamp(.72rem, 3.2vw, .86rem);
-  letter-spacing: .26em;
-  text-indent: .26em;
-  text-transform: uppercase;
-  color: var(--green);
-  background: rgba(255, 249, 239, .92);
-  border: 1px solid var(--gold);
-  border-radius: 999px;
-  box-shadow:
-    0 8px 22px rgba(74, 57, 45, .28),
-    inset 0 0 0 3px rgba(255, 249, 239, .9),
-    inset 0 0 0 4px rgba(181, 148, 88, .4);
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  padding: 0 4cqw 3cqw;
+  font: inherit;
+  color: var(--brown);
+  background: none;
+  border: 0;
+  border-radius: 14px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: background-color .3s var(--ease), color .3s var(--ease), transform .2s var(--ease), box-shadow .3s var(--ease);
 }
-.open-btn::after {
+
+.seal {
+  position: relative;
+  display: block;
+  width: 26.67cqw;
+  height: 26.67cqw;
+  border-radius: 50%;
+  transition: transform .45s var(--ease), filter .45s var(--ease);
+}
+.seal img { display: block; width: 100%; height: 100%; pointer-events: none; }
+
+/* soft gold ring that breathes around the wax */
+.seal::after {
   content: "";
   position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  border: 1px solid var(--gold);
-  animation: cta-pulse 2.8s ease-out infinite;
+  inset: 14%;
+  border-radius: 50%;
+  border: 1px solid rgba(214, 178, 96, .9);
+  box-shadow: 0 0 14px rgba(236, 200, 110, .55);
+  opacity: 0;
+  animation: seal-pulse 3.2s ease-out infinite;
   pointer-events: none;
 }
-.open-btn:hover { background: var(--green); color: #fff; }
-.open-btn:active { transform: scale(.96); }
-.open-btn:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
-.open-btn:disabled { cursor: default; }
-.is-playing .open-btn::after { animation: none; opacity: 0; }
 
-@keyframes cta-pulse {
-  0%   { transform: scale(1);    opacity: .65; }
-  70%  { transform: scale(1.22); opacity: 0; }
-  100% { transform: scale(1.22); opacity: 0; }
+.seal-label {
+  margin-top: -2.2cqw;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: clamp(.95rem, 4.6cqw, 1.3rem);
+  letter-spacing: .2em;
+  text-indent: .2em;
+  white-space: nowrap;
+  color: #5A4328;
+  text-shadow: 0 1px 0 rgba(255, 250, 238, .75);
+  transition: color .3s var(--ease);
 }
 
-/* Skip */
-.skip-btn {
-  position: absolute;
-  top: max(14px, env(safe-area-inset-top));
-  right: 14px;
-  min-height: 44px;
-  min-width: 44px;
-  padding: .5rem 1rem;
-  font-family: var(--font-label);
-  font-weight: 500;
-  font-size: .68rem;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--green);
-  background: rgba(255, 249, 239, .8);
-  border: 1px solid rgba(181, 148, 88, .8);
-  border-radius: 999px;
-  cursor: pointer;
-  -webkit-backdrop-filter: blur(6px);
-          backdrop-filter: blur(6px);
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color .3s var(--ease), color .3s var(--ease);
+.open-seal:hover .seal,
+.open-seal:focus-visible .seal {
+  transform: scale(1.07);
+  filter: drop-shadow(0 0 12px rgba(236, 200, 110, .85));
 }
-.skip-btn:hover { background: var(--green); color: #fff; }
+.open-seal:hover .seal-label,
+.open-seal:focus-visible .seal-label { color: var(--gold-deep); }
+.open-seal:active .seal { transform: scale(.97); }
+.open-seal:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 2px; }
+.open-seal:disabled { cursor: default; }
+.is-open .seal::after { animation: none; opacity: 0; }
 
-/* ----- Opening → main transition ----- */
+@keyframes seal-pulse {
+  0%   { transform: scale(1);    opacity: .7; }
+  70%  { transform: scale(1.32); opacity: 0; }
+  100% { transform: scale(1.32); opacity: 0; }
+}
+
+/* ----- Opening → main: simple cross-fade ----- */
 
 .is-open .opening {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
-.is-open .opening-stage { transform: scale(1.06); }
 
 /* ==========================================================
    SCREEN 2 — MAIN INVITATION
@@ -439,7 +420,7 @@ p, h1, h2, h3 { margin: 0; }
 }
 
 /* ----- Hero: layered cut-outs on warm cream -----
-   Chandelier, garlands and aisle are separate transparent images so each
+   Chandelier and aisle are separate transparent images so each
    can move on its own; everything animates with transform/opacity only. */
 
 .hero {
@@ -469,19 +450,6 @@ p, h1, h2, h3 { margin: 0; }
   opacity: 0;
 }
 
-.hero-layer {
-  position: absolute;
-  top: -2cqw;
-  width: 47cqw;
-  opacity: 0;
-}
-.hero-layer--l { left: -3cqw; --from: translate(-7%, -5%); transform-origin: 0 0; }
-.hero-layer--r { right: -3cqw; --from: translate(7%, -5%); transform-origin: 100% 0; }
-
-.hero-foliage { display: block; width: 100%; height: auto; transform-origin: inherit; }
-.hero-layer--l .hero-foliage { transform-origin: 0 0; }
-.hero-layer--r .hero-foliage { transform-origin: 100% 0; }
-
 .hero-chandelier {
   position: absolute;
   left: 50%; top: -4cqw;
@@ -505,21 +473,14 @@ p, h1, h2, h3 { margin: 0; }
 }
 
 /* Entrance, once the invitation opens */
-.is-open .hero-glow     { animation: hero-fade 2.4s var(--ease) .9s forwards; }
-.is-open .hero-layer    { animation: hero-drift 2.4s var(--ease) .6s forwards; }
-.is-open .hero-aisle    { animation: hero-rise 2.2s var(--ease) .8s forwards; }
+.is-open .hero-glow       { animation: hero-fade 2.4s var(--ease) .9s forwards; }
+.is-open .hero-aisle      { animation: hero-rise 2.2s var(--ease) .8s forwards; }
 .is-open .hero-chandelier { animation: chandelier-drop 2.8s cubic-bezier(.22, .8, .24, 1) .9s forwards; }
 
 /* Barely-there sway after settling: slow, small, not a distraction */
-.is-open .hero-foliage { animation: sway 8s ease-in-out 2.8s infinite alternate; }
-.is-open .hero-layer--r .hero-foliage { animation-duration: 9.5s; animation-direction: alternate-reverse; }
 .is-open .hero-chandelier img { animation: sway-chandelier 5.5s ease-in-out 3.7s infinite alternate; }
 
 @keyframes hero-fade { to { opacity: 1; } }
-@keyframes hero-drift {
-  from { opacity: 0; transform: var(--from); }
-  to   { opacity: 1; transform: none; }
-}
 @keyframes hero-rise {
   from { opacity: 0; transform: translateY(3cqw); }
   to   { opacity: 1; transform: none; }
@@ -529,7 +490,6 @@ p, h1, h2, h3 { margin: 0; }
   60%  { opacity: 1; }
   to   { opacity: 1; transform: none; }
 }
-@keyframes sway            { from { transform: rotate(-1.4deg); } to { transform: rotate(1.4deg); } }
 @keyframes sway-chandelier {
   from { transform: rotate(-2.4deg) translateY(0); }
   to   { transform: rotate(2.4deg) translateY(1.2cqw); }
@@ -639,19 +599,21 @@ p, h1, h2, h3 { margin: 0; }
   text-wrap: balance;
 }
 
-/* ----- Venues: watercolour church + reception ----- */
+/* ----- Venues: watercolour church + reception (flower-free artwork) ----- */
 
 .scene--venues {
   --img: url('assets/venues-bg.webp');
-  --a: .36;
+  --a: .347;
   --b: .33;
+  --scene-fill: var(--ivory-paper);
 }
 
+/* Text sits in the clean paper between the church and the reception artwork */
 .scene--venues .scene-content {
-  padding: calc(var(--I) * var(--a) + 1cqw) 16cqw calc(var(--I) * var(--b) - 3cqw);
+  padding: calc(var(--I) * var(--a) + 2cqw) 16cqw calc(var(--I) * var(--b) + 1cqw);
 }
 
-.scene--venues .divider { margin-block: clamp(1.1rem, 6cqw, 1.8rem); }
+.scene--venues .divider { margin-block: clamp(1rem, 5cqw, 1.6rem); }
 
 .venue { display: flex; flex-direction: column; align-items: center; }
 
@@ -717,34 +679,21 @@ p, h1, h2, h3 { margin: 0; }
 .btn:active { transform: scale(.98); }
 
 /* ==========================================================
-   RSVP + CLOSING — forest-green botanical arch
+   RSVP + CLOSING — ivory paper, champagne-gold arch
    ========================================================== */
 
 .scene--rsvp {
   --img: url('assets/rsvp-bg.webp');
-  --a: .28;
-  --b: .52;
-  --scene-fill: var(--forest);
+  --a: .30;
+  --b: .08;
+  --scene-fill: var(--ivory-paper);
   margin-top: 0;
-  color: #F6EEDC;
-}
-
-/* Subtle ivory → green hand-over from the venue section */
-.scene--rsvp::before {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; top: -12cqw;
-  height: 12cqw;
-  z-index: -1;
-  background: linear-gradient(to bottom, rgba(41, 51, 27, 0), var(--forest));
-  pointer-events: none;
+  color: var(--brown);
 }
 
 .scene--rsvp .scene-content {
-  padding: calc(var(--I) * .15) 15cqw calc(var(--I) * .1);
+  padding: calc(var(--I) * .14) 15cqw calc(var(--I) * .1);
 }
-
-.scene--rsvp :focus-visible { outline-color: var(--gold-light); }
 
 .rsvp { width: 100%; text-align: center; }
 
@@ -754,7 +703,7 @@ p, h1, h2, h3 { margin: 0; }
   font-size: clamp(1.9rem, 9cqw, 2.6rem);
   letter-spacing: .28em;
   text-indent: .28em;
-  color: var(--gold-light);
+  color: var(--brown);
   line-height: 1.1;
 }
 
@@ -762,7 +711,7 @@ p, h1, h2, h3 { margin: 0; }
   font-family: var(--font-head);
   font-style: italic;
   font-size: clamp(1.05rem, 4.8cqw, 1.3rem);
-  color: #F6EEDC;
+  color: var(--brown);
   margin: .3rem 0 1.4rem;
 }
 
@@ -776,7 +725,7 @@ p, h1, h2, h3 { margin: 0; }
   font-size: clamp(.6rem, 2.7cqw, .72rem);
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: #F6EEDC;
+  color: var(--gold-deep);
   line-height: 1.5;
 }
 
@@ -786,7 +735,7 @@ p, h1, h2, h3 { margin: 0; }
   text-transform: none;
   letter-spacing: .02em;
   font-size: 1.05em;
-  color: var(--gold-light);
+  color: var(--gold-deep);
 }
 
 .input {
@@ -797,21 +746,21 @@ p, h1, h2, h3 { margin: 0; }
   font-family: var(--font-body);
   font-size: 1rem; /* 16px+ stops iOS zooming on focus */
   color: #3B2F24;
-  background: var(--cream-field);
-  border: 1px solid var(--gold-light);
+  background: var(--field);
+  border: 1px solid var(--gold-line);
   border-radius: 0;
   transition: border-color .3s var(--ease), box-shadow .3s var(--ease), background-color .3s var(--ease);
   -webkit-appearance: none;
   appearance: none;
 }
-.input::placeholder { color: #6E604E; font-style: italic; }
+.input::placeholder { color: #7A6B58; font-style: italic; }
 .input:focus {
   outline: none;
   background: #fff;
-  border-color: #fff;
-  box-shadow: 0 0 0 3px rgba(220, 195, 137, .45);
+  border-color: var(--gold-deep);
+  box-shadow: 0 0 0 3px rgba(181, 148, 88, .28);
 }
-.input[aria-invalid="true"] { border-color: var(--error-light); box-shadow: 0 0 0 2px rgba(244, 184, 171, .45); }
+.input[aria-invalid="true"] { border-color: var(--error); box-shadow: 0 0 0 2px rgba(139, 46, 46, .18); }
 
 .input--select {
   padding-right: 2.4rem;
@@ -834,36 +783,36 @@ p, h1, h2, h3 { margin: 0; }
   font-size: clamp(.62rem, 2.8cqw, .74rem);
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: #F6EEDC;
-  background: rgba(251, 244, 228, .06);
-  border: 1px solid var(--gold-light);
+  color: var(--brown);
+  background: var(--field);
+  border: 1px solid var(--gold-line);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition: background-color .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease), transform .2s var(--ease);
 }
-.choice:hover { background: rgba(251, 244, 228, .14); }
+.choice:hover { border-color: var(--gold-deep); background: #fff; }
 .choice:active { transform: scale(.98); }
 .choice[aria-pressed="true"] {
-  color: #1F2A14;
+  color: #fff;
   font-weight: 600;
-  background: linear-gradient(160deg, #E8D39B 0%, #D2B56F 100%);
-  border-color: #F1E1B2;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, .3);
+  background: var(--olive);
+  border-color: var(--olive);
+  box-shadow: 0 4px 12px rgba(58, 67, 32, .25);
 }
 
 /* Send */
 .btn--solid {
   width: 100%;
   margin-top: .5rem;
-  color: var(--gold-light);
-  background: transparent;
-  border: 1px solid var(--gold-light);
-  box-shadow: inset 0 0 0 3px var(--forest), inset 0 0 0 4px rgba(220, 195, 137, .45);
+  color: #fff;
+  background: var(--olive);
+  border: 1px solid var(--olive);
+  box-shadow: inset 0 0 0 3px var(--olive), inset 0 0 0 4px rgba(255, 255, 255, .35);
 }
 .btn--solid:hover {
-  color: #1F2A14;
-  background: var(--gold-light);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+  background: var(--olive-dark);
+  border-color: var(--olive-dark);
+  box-shadow: inset 0 0 0 3px var(--olive-dark), inset 0 0 0 4px rgba(255, 255, 255, .35), 0 6px 16px rgba(58, 67, 32, .3);
 }
 .btn--solid:disabled { opacity: .7; cursor: progress; transform: none; }
 
@@ -871,7 +820,7 @@ p, h1, h2, h3 { margin: 0; }
   margin-top: .45rem;
   font-size: .98rem;
   line-height: 1.4;
-  color: var(--error-light);
+  color: var(--error);
 }
 
 .form-status {
@@ -880,9 +829,9 @@ p, h1, h2, h3 { margin: 0; }
   font-size: 1rem;
   line-height: 1.45;
   text-align: left;
-  border-left: 3px solid var(--error-light);
-  background: rgba(244, 184, 171, .12);
-  color: var(--error-light);
+  border-left: 3px solid var(--error);
+  background: rgba(139, 46, 46, .07);
+  color: var(--error);
 }
 
 .hp {
@@ -900,7 +849,7 @@ p, h1, h2, h3 { margin: 0; }
   font-weight: 600;
   font-size: clamp(1.6rem, 7.4cqw, 2.1rem);
   line-height: 1.25;
-  color: var(--gold-light);
+  color: var(--brown);
   text-wrap: balance;
 }
 .rsvp-thanks-sub {
@@ -924,7 +873,7 @@ p, h1, h2, h3 { margin: 0; }
   font-family: var(--font-head);
   font-style: italic;
   font-size: clamp(1.1rem, 5cqw, 1.4rem);
-  color: #F6EEDC;
+  color: var(--brown);
 }
 
 .closing-names {
@@ -933,7 +882,7 @@ p, h1, h2, h3 { margin: 0; }
   font-weight: 700;
   font-size: clamp(1.6rem, 7.4cqw, 2.1rem);
   letter-spacing: .04em;
-  color: var(--gold-light);
+  color: var(--gold-deep);
 }
 
 /* ==========================================================
@@ -995,8 +944,18 @@ p, h1, h2, h3 { margin: 0; }
   .divider.reveal i { opacity: 1; transform: none; }
   .divider.reveal i { transform: rotate(45deg); }
 
-  .open-btn::after { display: none; }
-  .is-open .opening-stage { transform: none; }
-  .hero-glow, .hero-layer, .hero-aisle, .hero-chandelier { opacity: 1; animation: none !important; transform: none; }
-  .hero-foliage, .hero-chandelier img { animation: none !important; }
+  .seal::after { display: none; }
+  .hero-glow, .hero-aisle, .hero-chandelier { opacity: 1; animation: none !important; transform: none; }
+  .hero-chandelier img { animation: none !important; }
+}
+
+/* Soft hand-over from the date section's paper into the venue artwork */
+.scene--venues::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 10cqw;
+  z-index: -1;
+  background: linear-gradient(to bottom, var(--paper), rgba(246, 235, 218, 0));
+  pointer-events: none;
 }

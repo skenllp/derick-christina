@@ -1,6 +1,6 @@
 /* ==========================================================
    Derick & Christina — Wedding Invitation
-   Opening video · countdown · scroll reveals · RSVP
+   Wax-stamp opening · countdown · scroll reveals · RSVP
    ========================================================== */
 (() => {
   'use strict';
@@ -22,120 +22,38 @@
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* ---------- Opening video → main invitation ---------- */
+  /* ---------- Opening: tap the wax stamp → fade into the invitation ---------- */
   function initOpening(music) {
     const root = document.documentElement;
     const opening = $('#opening');
-    const stage = $('#opening-stage');
-    const video = $('#opening-video');
     const openBtn = $('#open-btn');
-    const skipBtn = $('#skip-btn');
     const main = $('#invitation');
     if (!opening || !openBtn || !main) return;
 
-    const HOLD_MS = 900;          // linger on the final invitation frame
-    const STALL_MS = 12000;       // give up if the video makes no progress
-    const instant = reducedMotion.matches;
+    const FADE_MS = 1000;   // matches --open-duration in style.css
 
     // Keep the invitation out of reach (tab order, screen readers) until opened.
     main.inert = true;
 
-    let started = false;
-    let finished = false;
-    let holdTimer = null;
-    let watchdog = null;
-    let lastTime = -1;
-    let lastProgressAt = 0;
-    let videoFailed = false;
+    let opened = false;
 
-    if (video) {
-      video.muted = true;            // iOS needs the property, not just the attribute
-      video.defaultMuted = true;
-      video.loop = false;
-      video.controls = false;
-      video.addEventListener('error', () => { videoFailed = true; if (started) finish(true); }, true);
-      const source = video.querySelector('source');
-      if (source) source.addEventListener('error', () => { videoFailed = true; if (started) finish(true); });
-    }
-
-    /* Reveal the main invitation and enable scrolling */
-    function finish(immediate) {
-      if (finished) return;
-      finished = true;
-      window.clearTimeout(holdTimer);
-      window.clearInterval(watchdog);
-      if (video) video.pause();
-
-      const quick = immediate || instant;
-      root.classList.add('is-open');
-      root.classList.remove('is-locked');
-      main.inert = false;
-
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      main.focus({ preventScroll: true });
-
-      window.setTimeout(initReveal, quick ? 0 : 500);
-      window.setTimeout(() => { opening.hidden = true; }, quick ? 0 : 2000);
-    }
-
-    /* Video reached its last frame: hold it briefly, then transition */
-    function onEnded() {
-      if (finished) return;
-      window.clearTimeout(holdTimer);
-      holdTimer = window.setTimeout(() => finish(false), HOLD_MS);
-    }
-
-    function startOpening() {
-      if (started) return;
-      started = true;
+    openBtn.addEventListener('click', () => {
+      if (opened) return;
+      opened = true;
 
       // Must run directly inside the tap handler or mobile browsers block audio.
       music.start();
 
       openBtn.disabled = true;
-      stage.classList.add('is-playing');
-      root.classList.add('is-playing');
+      root.classList.add('is-open');      // CSS cross-fades opening → invitation
+      root.classList.remove('is-locked'); // normal vertical scrolling
+      main.inert = false;
 
-      // Reduced motion, missing video or failed load: go straight in.
-      if (!video || instant || videoFailed) { finish(true); return; }
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      main.focus({ preventScroll: true });
 
-      video.addEventListener('ended', onEnded, { once: true });
-      // Fallback for browsers that skip "ended" on the last frame
-      video.addEventListener('timeupdate', () => {
-        if (video.duration && video.currentTime >= video.duration - 0.05) onEnded();
-      });
-
-      const attempt = video.play();
-      if (attempt && typeof attempt.catch === 'function') {
-        attempt.catch(() => finish(true)); // blocked or unsupported: don't trap the guest
-      }
-
-      // Safety net: if playback stalls, let the guest in rather than leave them waiting.
-      lastProgressAt = Date.now();
-      watchdog = window.setInterval(() => {
-        if (video.currentTime !== lastTime) {
-          lastTime = video.currentTime;
-          lastProgressAt = Date.now();
-        } else if (!video.ended && Date.now() - lastProgressAt > STALL_MS) {
-          finish(true);
-        }
-      }, 1000);
-    }
-
-    openBtn.addEventListener('click', startOpening);
-
-    if (skipBtn) {
-      skipBtn.addEventListener('click', () => {
-        if (!started) {
-          started = true;
-          music.start();   // a tap is a valid gesture; the toggle lets guests mute
-        }
-        finish(true);
-      });
-    }
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !finished) skipBtn && skipBtn.click();
+      initReveal();
+      window.setTimeout(() => { opening.hidden = true; }, reducedMotion.matches ? 0 : FADE_MS + 100);
     });
   }
 

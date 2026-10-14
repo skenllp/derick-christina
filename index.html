@@ -30,6 +30,7 @@
 
   <!-- Images -->
   <link rel="preload" as="image" href="assets/opening-poster.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/wax-stamp.webp">
   <link rel="preload" as="image" href="assets/hero-chandelier.webp">
 
   <link rel="stylesheet" href="style.css">
@@ -38,7 +39,7 @@
     <style>
       html.is-locked, html.is-locked body { overflow: auto; }
       .opening { display: none; }
-      .hero-layer, .hero-chandelier, .hero-aisle, .hero-glow { opacity: 1 !important; animation: none !important; transform: none !important; }
+      .hero-chandelier, .hero-aisle, .hero-glow { opacity: 1 !important; animation: none !important; transform: none !important; }
       .invitation { opacity: 1 !important; transform: none !important; }
       .reveal { opacity: 1 !important; transform: none !important; }
     </style>
@@ -46,27 +47,18 @@
 </head>
 <body>
 
-  <!-- ============ SCREEN 1 — CINEMATIC OPENING ============ -->
+  <!-- ============ SCREEN 1 — STATIC OPENING (tap the wax stamp) ============ -->
   <section class="opening" id="opening" aria-label="Wedding invitation opening">
     <div class="opening-stage" id="opening-stage">
-      <div class="opening-media">
-        <video id="opening-video" class="opening-video"
-               poster="assets/opening-poster.webp"
-               muted playsinline webkit-playsinline preload="auto"
-               disablepictureinpicture disableremoteplayback
-               controlslist="nodownload noplaybackrate nofullscreen"
-               aria-hidden="true" tabindex="-1">
-          <source src="assets/wedding-opening.mp4" type="video/mp4">
-        </video>
-      </div>
+      <div class="opening-media" aria-hidden="true"></div>
 
-      <div class="opening-cta" id="opening-cta">
-        <button type="button" class="open-btn" id="open-btn">
-          <span>Open Invitation</span>
-        </button>
-      </div>
-
-      <button type="button" class="skip-btn" id="skip-btn">Skip<span class="sr-only"> the opening animation</span></button>
+      <!-- One button: the wax stamp and the label beneath it open the invitation -->
+      <button type="button" class="open-seal" id="open-btn" aria-label="Open Invitation">
+        <span class="seal" aria-hidden="true">
+          <img src="assets/wax-stamp.webp" alt="" width="192" height="192" decoding="async">
+        </span>
+        <span class="seal-label" aria-hidden="true">Open Invitation</span>
+      </button>
     </div>
   </section>
 
@@ -77,8 +69,6 @@
     <section class="hero" aria-labelledby="couple-heading">
       <div class="hero-bg" aria-hidden="true">
         <span class="hero-glow"></span>
-        <span class="hero-layer hero-layer--l"><img class="hero-foliage" src="assets/hero-foliage-left.webp" alt="" width="780" height="1386" decoding="async"></span>
-        <span class="hero-layer hero-layer--r"><img class="hero-foliage" src="assets/hero-foliage-right.webp" alt="" width="780" height="1386" decoding="async"></span>
         <img class="hero-aisle" src="assets/hero-aisle.webp" alt="" width="1200" height="675" decoding="async">
         <span class="hero-chandelier"><img src="assets/hero-chandelier.webp" alt="" width="680" height="1020" decoding="async"></span>
       </div>
@@ -142,7 +132,7 @@
       </div>
     </section>
 
-    <!-- RSVP + closing (forest-green botanical arch) -->
+    <!-- RSVP + closing (ivory paper, champagne-gold arch) -->
     <section class="scene scene--rsvp" aria-labelledby="rsvp-heading">
       <div class="scene-bg" aria-hidden="true"><i class="slice slice--top"></i><i class="slice slice--mid"></i><i class="slice slice--bot"></i></div>
       <div class="scene-content">
@@ -215,7 +205,7 @@
     </section>
   </main>
 
-  <!-- Background music: starts when the visitor taps "Open Invitation" (browsers require a tap), loops, can be muted -->
+  <!-- Background music: starts when the visitor taps the wax stamp (browsers require a tap), loops, can be muted -->
   <audio id="bgm" src="assets/music.mp3" loop preload="none"></audio>
   <button type="button" class="music-toggle" id="music-toggle" aria-label="Play music" aria-pressed="false">
     <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
