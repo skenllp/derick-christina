@@ -22,38 +22,36 @@
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* ---------- Opening: tap the wax stamp → fade into the invitation ---------- */
+  /* ---------- Four-flap envelope opening ---------- */
   function initOpening(music) {
     const root = document.documentElement;
     const opening = $('#opening');
     const openBtn = $('#open-btn');
     const main = $('#invitation');
     if (!opening || !openBtn || !main) return;
-
-    const FADE_MS = 1000;   // matches --open-duration in style.css
-
-    // Keep the invitation out of reach (tab order, screen readers) until opened.
     main.inert = true;
-
     let opened = false;
-
+    let finished = false;
+    function finish() {
+      if (finished) return;
+      finished = true;
+      root.classList.add('is-open');
+      root.classList.remove('is-locked');
+      main.inert = false;
+      window.scrollTo(0, 0);
+      main.focus({ preventScroll: true });
+      initReveal();
+      window.setTimeout(() => { opening.hidden = true; }, reducedMotion.matches ? 100 : 1050);
+    }
     openBtn.addEventListener('click', () => {
       if (opened) return;
       opened = true;
-
-      // Must run directly inside the tap handler or mobile browsers block audio.
-      music.start();
-
+      music.start(); // Must be inside a user gesture for mobile playback.
       openBtn.disabled = true;
-      root.classList.add('is-open');      // CSS cross-fades opening → invitation
-      root.classList.remove('is-locked'); // normal vertical scrolling
-      main.inert = false;
-
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      main.focus({ preventScroll: true });
-
-      initReveal();
-      window.setTimeout(() => { opening.hidden = true; }, reducedMotion.matches ? 0 : FADE_MS + 100);
+      if (reducedMotion.matches) { finish(); return; }
+      root.classList.add('is-unfolding');
+      // CSS controls flap motion. Finish after the glow reveals the invitation.
+      window.setTimeout(finish, 1950);
     });
   }
 

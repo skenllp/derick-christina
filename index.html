@@ -29,7 +29,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
 
   <!-- Images -->
-  <link rel="preload" as="image" href="assets/opening-poster.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/envelope/envelope-base.jpg" fetchpriority="high">
   <link rel="preload" as="image" href="assets/wax-stamp.webp">
   <link rel="preload" as="image" href="assets/hero-chandelier.webp">
 
@@ -50,14 +50,17 @@
   <!-- ============ SCREEN 1 — STATIC OPENING (tap the wax stamp) ============ -->
   <section class="opening" id="opening" aria-label="Wedding invitation opening">
     <div class="opening-stage" id="opening-stage">
-      <div class="opening-media" aria-hidden="true"></div>
-
-      <!-- One button: the wax stamp and the label beneath it open the invitation -->
-      <button type="button" class="open-seal" id="open-btn" aria-label="Open Invitation">
-        <span class="seal" aria-hidden="true">
-          <img src="assets/wax-stamp.webp" alt="" width="192" height="192" decoding="async">
-        </span>
-        <span class="seal-label" aria-hidden="true">Open Invitation</span>
+      <div class="envelope-scene" aria-hidden="true">
+        <img class="envelope-base" src="assets/envelope/envelope-base.jpg" alt="" fetchpriority="high">
+        <img class="envelope-flap flap-top" src="assets/envelope/flap-top.png" alt="">
+        <img class="envelope-flap flap-left" src="assets/envelope/flap-left.png" alt="">
+        <img class="envelope-flap flap-right" src="assets/envelope/flap-right.png" alt="">
+        <img class="envelope-flap flap-bottom" src="assets/envelope/flap-bottom.png" alt="">
+        <div class="envelope-light"></div>
+      </div>
+      <button type="button" class="open-seal" id="open-btn" aria-label="Open Wedding Invitation">
+        <span class="seal" aria-hidden="true"><img src="assets/envelope/wax-seal.png" alt="" width="220" height="220"></span>
+        <span class="seal-label" aria-hidden="true">OPEN INVITATION</span>
       </button>
     </div>
   </section>
