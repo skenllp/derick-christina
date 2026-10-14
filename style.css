@@ -770,7 +770,7 @@ p, h1, h2, h3 { margin: 0; }
   cursor: pointer;
 }
 
-.input--textarea { resize: vertical; min-height: 92px; line-height: 1.5; }
+.input--textarea { resize: vertical; min-height: 60px; line-height: 1.5; font-size: .9rem; }
 
 /* Attendance choice */
 .choices { display: grid; gap: .6rem; }
