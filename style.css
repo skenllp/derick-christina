@@ -143,6 +143,33 @@ p, h1, h2, h3 { margin: 0; }
   line-height: 1.1;
 }
 
+/* ---------- Scripture verse ---------- */
+
+.verse {
+  margin: 0 0 clamp(.8rem, 3.5cqw, 1.2rem);
+  padding: 0 4cqw;
+}
+
+.verse-text {
+  font-family: var(--font-head);
+  font-style: italic;
+  font-size: clamp(.88rem, 3.9cqw, 1.05rem);
+  line-height: 1.55;
+  color: var(--brown);
+  text-wrap: balance;
+}
+
+.verse-cite {
+  display: block;
+  margin-top: .35rem;
+  font-family: var(--font-label);
+  font-style: normal;
+  font-size: clamp(.58rem, 2.5cqw, .68rem);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+
 /* ---------- Divider ---------- */
 
 .divider {
@@ -498,7 +525,7 @@ p, h1, h2, h3 { margin: 0; }
 .hero-content {
   position: relative;
   z-index: 3;                 /* text always above the curtain */
-  padding: 69cqw 19cqw 24cqw; /* keeps copy inside the curtain opening */
+  padding: 58cqw 19cqw 24cqw; /* keeps copy inside the curtain opening */
 }
 
 /* Champagne curtain frame — decorative overlay only.
@@ -914,7 +941,7 @@ p, h1, h2, h3 { margin: 0; }
   margin-top: .2rem;
   font-family: var(--font-head);
   font-weight: 700;
-  font-size: clamp(1.6rem, 7.4cqw, 2.1rem);
+  font-size: clamp(1.1rem, 5cqw, 1.4rem);
   letter-spacing: .04em;
   color: var(--gold-deep);
 }
