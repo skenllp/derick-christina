@@ -147,7 +147,7 @@ p, h1, h2, h3 { margin: 0; }
 
 .verse {
   margin: 0 0 clamp(.8rem, 3.5cqw, 1.2rem);
-  padding: 0 4cqw;
+  padding: 0 1cqw;
 }
 
 .verse-text {
@@ -164,7 +164,7 @@ p, h1, h2, h3 { margin: 0; }
   margin-top: .35rem;
   font-family: var(--font-label);
   font-style: normal;
-  font-size: clamp(.58rem, 2.5cqw, .68rem);
+  font-size: clamp(.46rem, 1.9cqw, .54rem);
   letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--gold-deep);
