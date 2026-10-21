@@ -132,10 +132,11 @@ p, h1, h2, h3 { margin: 0; }
   margin: clamp(.5rem, 2.4cqw, 1rem) 0 0;
 }
 
-.names .gold-text { display: block; padding: .06em .12em; }
+.names .gold-text { display: block; padding: .06em .12em; text-align: center; }
 
 .amp {
   display: block;
+  text-align: center;
   font-family: var(--font-head);
   font-style: italic;
   font-size: clamp(1.3rem, 6cqw, 1.8rem);
@@ -153,7 +154,7 @@ p, h1, h2, h3 { margin: 0; }
 .verse-text {
   font-family: var(--font-head);
   font-style: italic;
-  font-size: clamp(.88rem, 3.9cqw, 1.05rem);
+  font-size: clamp(.72rem, 3.2cqw, .88rem);
   line-height: 1.55;
   color: var(--brown);
   text-wrap: balance;
@@ -525,7 +526,8 @@ p, h1, h2, h3 { margin: 0; }
 .hero-content {
   position: relative;
   z-index: 3;                 /* text always above the curtain */
-  padding: 58cqw 19cqw 24cqw; /* keeps copy inside the curtain opening */
+  padding: 46cqw 19cqw 24cqw; /* keeps copy inside the curtain opening */
+  text-align: center;
 }
 
 /* Champagne curtain frame — decorative overlay only.
@@ -557,8 +559,10 @@ p, h1, h2, h3 { margin: 0; }
 .hero .names {
   font-size: clamp(1.9rem, 9.6cqw, 3rem);
   margin-inline: -5cqw;      /* the opening is widest here, so allow a little extra room */
+  text-align: center;
+  width: calc(100% + 10cqw);
 }
-.hero .names .gold-text { white-space: nowrap; }
+.hero .names .gold-text { white-space: nowrap; text-align: center; }
 
 /* Fade the aisle into the paper-coloured date section */
 .hero::after {
