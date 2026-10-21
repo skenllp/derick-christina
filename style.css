@@ -561,6 +561,53 @@ p, h1, h2, h3 { margin: 0; }
 }
 .hero .names .gold-text { white-space: nowrap; }
 
+/* ----- Hero closing quote ----- */
+.hero-quote {
+  margin-top: clamp(.8rem, 4cqw, 1.4rem);
+  text-align: center;
+}
+
+.hero-quote-divider {
+  width: clamp(60px, 30cqw, 110px);
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-line), transparent);
+  margin: 0 auto clamp(.5rem, 2.5cqw, .9rem);
+  position: relative;
+}
+
+.hero-quote-divider::before {
+  content: "❧";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(.55rem, 2.4cqw, .75rem);
+  color: var(--gold-deep);
+  background: var(--ivory-paper);
+  padding: 0 .3em;
+}
+
+.hero-quote-text {
+  font-family: var(--font-script);
+  font-size: clamp(1rem, 4.8cqw, 1.4rem);
+  color: var(--gold-deep);
+  background: linear-gradient(120deg, #8A6B33 0%, #B59458 32%, #D2B77A 50%, #B59458 68%, #8A6B33 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.4;
+  margin: 0 0 .3rem;
+}
+
+.hero-quote-sub {
+  font-family: var(--font-label);
+  font-size: clamp(.42rem, 1.8cqw, .52rem);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin: 0;
+}
+
 /* Fade the aisle into the paper-coloured date section */
 .hero::after {
   content: "";
