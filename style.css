@@ -43,7 +43,7 @@ body {
   margin: 0;
   min-height: 100vh;
   min-height: 100svh;
-  font-family: var(--font-body);
+  font-family: var(--font-head);
   color: var(--brown);
   background: linear-gradient(160deg, #EFE2CC 0%, #E6D3B4 50%, #EFE2CC 100%);
   overflow-x: clip;
@@ -102,6 +102,7 @@ p, h1, h2, h3 { margin: 0; }
 .text {
   margin-top: clamp(.5rem, 2.2cqw, .8rem);
   font-size: clamp(.98rem, 4.3cqw, 1.18rem);
+  font-style: italic;
   line-height: 1.5;
   text-wrap: balance;
 }
@@ -109,6 +110,7 @@ p, h1, h2, h3 { margin: 0; }
 .parents {
   font-family: var(--font-head);
   font-weight: 600;
+  font-style: italic;
   font-size: clamp(1.05rem, 5.2cqw, 1.5rem);
   line-height: 1.25;
   text-wrap: balance;
@@ -762,6 +764,7 @@ p, h1, h2, h3 { margin: 0; }
 .venue-name {
   font-family: var(--font-head);
   font-weight: 600;
+  font-style: italic;
   font-size: clamp(1.2rem, 5.6cqw, 1.65rem);
   line-height: 1.2;
   margin-top: .4rem;
@@ -829,6 +832,7 @@ p, h1, h2, h3 { margin: 0; }
 .rsvp-title {
   font-family: var(--font-head);
   font-weight: 600;
+  font-style: italic;
   font-size: clamp(1.9rem, 9cqw, 2.6rem);
   letter-spacing: .28em;
   text-indent: .28em;
@@ -859,7 +863,7 @@ p, h1, h2, h3 { margin: 0; }
 }
 
 .field-optional {
-  font-family: var(--font-body);
+  font-family: var(--font-head);
   font-style: italic;
   text-transform: none;
   letter-spacing: .02em;
@@ -872,7 +876,7 @@ p, h1, h2, h3 { margin: 0; }
   width: 100%;
   min-height: 48px;
   padding: .75rem .9rem;
-  font-family: var(--font-body);
+  font-family: var(--font-head);
   font-size: 1rem; /* 16px+ stops iOS zooming on focus */
   color: #3B2F24;
   background: var(--field);
@@ -976,6 +980,7 @@ p, h1, h2, h3 { margin: 0; }
 .rsvp-thanks-title {
   font-family: var(--font-head);
   font-weight: 600;
+  font-style: italic;
   font-size: clamp(1.6rem, 7.4cqw, 2.1rem);
   line-height: 1.25;
   color: var(--brown);
