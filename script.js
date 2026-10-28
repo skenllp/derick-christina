@@ -7,8 +7,8 @@
 
   /* ---------- Configuration ---------- */
   const CONFIG = {
-    // Wedding start: 9 January 2027, 2:30 PM IST
-    weddingDate: '2027-01-09T14:30:00+05:30',
+    // Wedding start: 9 January 2027, 3:00 PM IST
+    weddingDate: '2027-01-09T15:00:00+05:30',
 
     // RSVP backend. Paste the URL that should receive RSVP submissions.
     // The form POSTs JSON: { name, attending, guests, note, submittedAt }
