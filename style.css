@@ -610,6 +610,43 @@ p, h1, h2, h3 { margin: 0; }
   margin: 0;
 }
 
+/* ----- Hero scroll arrow ----- */
+.hero-scroll-btn {
+  position: absolute;
+  bottom: 12cqw;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3rem;
+  color: var(--gold-deep);
+  opacity: 0;
+  animation: hero-scroll-in 1s var(--ease) 2.5s forwards, scroll-bounce 2s ease-in-out 3.5s infinite;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero-scroll-btn svg {
+  width: clamp(1.4rem, 6cqw, 2rem);
+  height: clamp(1.4rem, 6cqw, 2rem);
+  filter: drop-shadow(0 1px 3px rgba(138, 107, 51, .4));
+}
+
+@keyframes hero-scroll-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(6px); }
+}
+
 /* Fade the aisle into the paper-coloured date section */
 .hero::after {
   content: "";

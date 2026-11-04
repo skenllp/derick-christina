@@ -348,4 +348,13 @@
   initOpening(initMusic());
   initCountdown();
   initRsvp();
+
+  /* ---------- Hero scroll arrow ---------- */
+  const scrollBtn = $('#hero-scroll');
+  if (scrollBtn) {
+    scrollBtn.addEventListener('click', () => {
+      const dateSection = document.querySelector('.date-section');
+      if (dateSection) dateSection.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
 })();
